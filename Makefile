@@ -25,3 +25,8 @@ clean:
 	@echo "Cleaning build artifacts..."
 	cargo clean
 	rm -rf target/ dist/ *.egg-info
+	find . -type f -name "*.pyc" -delete
+	find . -type d -name "__pycache__" -delete
+
+prune:
+	git fetch -p && for branch in $$(git branch -vv | grep ': gone]' | awk '{print $$1}'); do git branch -D $$branch; done
