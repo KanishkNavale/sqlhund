@@ -31,7 +31,11 @@ bindings = "pyo3"
 features = ["pyo3/extension-module"]
 
 [dependency-groups]
-dev = ["duckdb>=1.5.1", "maturin>=1.12.6", "pytest>=9.0.2", "tqdm>=4.67.3"]
+dev = [
+ "maturin>=1.12.6",
+ "pytest>=9.0.2",
+ "tqdm>=4.67.3",
+]
 
 [tool.pytest.ini_options]
 addopts = "--color=yes --durations=10"

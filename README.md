@@ -2,6 +2,16 @@
 
 A Rust library with Python bindings for detecting SQL injection patterns in input strings. Built for speed and designed especially for AI agents that process or generate SQL queries.
 
+>[!NOTE]
+>
+>The primary goal is to block AI agents from manipulating the data in the DB. or the DB. itself!
+
+## Supported Databases
+
+- Sqlite
+- Postgres
+- DuckDB
+
 ## Building from Source
 
 Requires [Rust](https://rustup.rs/), [Maturin](https://github.com/PyO3/maturin) & [UV](https://docs.astral.sh/uv/).
@@ -18,28 +28,25 @@ make release
 - Python
 
     ```python
-    from injectdb import audit_query
+    from injectdb import validate_query
 
-    audit_query("SELECT * FROM users WHERE id = 1")
+    validate_query("SELECT * FROM users WHERE id = 1")
     # False
 
-    audit_query("SELECT * FROM users WHERE id = 1 OR 1=1 --")
-    # True
-
-    audit_query("'; DROP TABLE users; --")
+    validate_query("SELECT * FROM users WHERE id = 1 OR 1=1 --")
     # True
     ```
 
 - Rust
 
     ```rust
-    use injectdb::audit_query;
+    use injectdb::validate_query;
 
     fn main() {
-        let safe = audit_query("SELECT * FROM users WHERE id = 1");
+        let safe = validate_query("SELECT * FROM users WHERE id = 1");
         println!("{}", safe); // false
 
-        let malicious = audit_query("SELECT * FROM users WHERE id = 1 OR 1=1 --");
+        let malicious = validate_query("SELECT * FROM users WHERE id = 1 OR 1=1 --");
         println!("{}", malicious); // true
     }
     ```
@@ -49,7 +56,7 @@ make release
 - Sanity Tests
 
     ```bash
-    make test
+    make unittest
     ```
 
 - Dataset evaluation (requires dataset)
@@ -70,7 +77,3 @@ Evaluated against the [RbSQLi dataset](https://data.mendeley.com/datasets/xz4d5z
     -------------------|---------------|---------------|
     Actual Malicious   |   2,813,146   |           0   |
     Actual Benign      |           0   |   7,490,880   |
-
-## License
-
-[MIT](LICENSE)

@@ -1,4 +1,4 @@
-use injectdb::audit_query;
+use injectdb::validate_query;
 
 #[cfg(test)]
 mod dataset_tests {
@@ -74,7 +74,7 @@ mod dataset_tests {
         );
 
         for (query, expected) in &cases {
-            let result = audit_query(query);
+            let result = validate_query(query);
             match (expected, result) {
                 (true, true) => tp += 1,
                 (false, false) => tn += 1,

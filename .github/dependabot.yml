@@ -1,0 +1,49 @@
+version: 2
+updates:
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      time: "04:00"
+    groups:
+      python-packages:
+        patterns:
+          - "*"
+    open-pull-requests-limit: 10
+    allow:
+      - dependency-type: direct
+      - dependency-type: indirect
+    commit-message:
+      prefix: "Deps"
+
+  - package-ecosystem: "cargo"
+    directory: "/interface"
+    schedule:
+      interval: "weekly"
+      time: "04:00"
+    groups:
+      npm-packages:
+        patterns:
+          - "*"
+    open-pull-requests-limit: 10
+    allow:
+      - dependency-type: direct
+      - dependency-type: indirect
+    commit-message:
+      prefix: "Deps"
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      time: "04:00"
+    groups:
+      github-actions:
+        patterns:
+          - "*"
+    open-pull-requests-limit: 10
+    allow:
+      - dependency-type: direct
+      - dependency-type: indirect
+    commit-message:
+      prefix: "Deps"
