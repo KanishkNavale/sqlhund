@@ -1,11 +1,12 @@
 pub mod abstracts;
-use abstracts::{DUCKDB, GENERAL, POSTGRES, SQLITE};
+use abstracts::{DUCKDB, GENERAL, POSTGRES, SANITIZER, SQLITE};
 use regex::RegexSet;
 use std::sync::LazyLock;
 
 pub fn all_patterns() -> Vec<&'static str> {
     let mut patterns = Vec::new();
     patterns.extend_from_slice(&GENERAL);
+    patterns.extend_from_slice(&SANITIZER);
     patterns.extend_from_slice(&POSTGRES);
     patterns.extend_from_slice(&SQLITE);
     patterns.extend_from_slice(&DUCKDB);

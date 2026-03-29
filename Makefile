@@ -6,7 +6,10 @@ release:
 	@echo "Compiling injectdb (release)..."
 	uv run maturin build --release
 
-test:
+unittest:
+	@echo "Running Rust tests..."
+	cargo test --release
+
 	@echo "Running Python tests..."
 	uv run pytest
 

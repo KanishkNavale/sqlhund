@@ -44,6 +44,23 @@ pub const GENERAL: &[&str] = &[
     r"(?i)\bcase\s+when\s+.+?\s+then\b",
 ];
 
+pub const SANITIZER: &[&str] = &[
+    // DDL — any schema modification
+    r"(?i)\b(?:DROP|CREATE|ALTER|TRUNCATE)\s+(?:TABLE|INDEX|VIEW|TRIGGER|SCHEMA|DATABASE|SEQUENCE|PROCEDURE|FUNCTION|ROLE|USER)\b",
+    // DML — any data modification
+    r#"(?i)\b(?:DELETE\s+FROM|INSERT\s+INTO|UPDATE\s+[\w`"'\[]+[\w`"'\]]*\s+SET|REPLACE\s+INTO|MERGE\s+INTO)\b"#,
+    // UNION — column count probing / data exfiltration
+    r"(?i)\bunion\b(?:\s+(?:all|distinct))?\s+select\b",
+    // SUBQUERIES — nested SELECT
+    r"(?i)\(\s*select\s+",
+    // STACKED QUERIES — multiple statements
+    r"(?i);\s*\b(?:select|insert|update|delete|drop|create|alter|truncate|exec|execute|call|begin|commit|rollback)\b",
+    // COMMENTS — used to truncate or bypass
+    r"(?m)(--[^\r\n]*$|#[^\r\n]*$)|(/\*[\s\S]*?\*/)",
+    // EXECUTION
+    r"(?i)\b(?:EXEC|EXECUTE)\s+\w*_\w+\s*\(|\bCALL\s+\w*_\w+\s*\(|\b(?:GRANT|REVOKE)\b",
+];
+
 pub const SQLITE: &[&str] = &[
     // SYSTEM SCHEMA ACCESS
     // Matches: sqlite_master, sqlite_schema, sqlite_temp_master, sqlite_temp_schema
