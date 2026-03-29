@@ -1,5 +1,5 @@
 pub mod abstracts;
-use abstracts::{GENERAL, POSTGRES, SQLITE};
+use abstracts::{DUCKDB, GENERAL, POSTGRES, SQLITE};
 use regex::RegexSet;
 use std::sync::LazyLock;
 
@@ -8,6 +8,7 @@ pub fn all_patterns() -> Vec<&'static str> {
     patterns.extend_from_slice(&GENERAL);
     patterns.extend_from_slice(&POSTGRES);
     patterns.extend_from_slice(&SQLITE);
+    patterns.extend_from_slice(&DUCKDB);
     patterns
 }
 

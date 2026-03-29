@@ -125,3 +125,41 @@ pub const POSTGRES: &[&str] = &[
     // Matches: SET ROLE, SET SESSION AUTHORIZATION
     r"(?i)\bset\s+(?:role|session\s+authorization)\b",
 ];
+
+pub const DUCKDB: &[&str] = &[
+    // SYSTEM TABLE PROBING
+    // Matches: duckdb_tables(), duckdb_columns(), duckdb_schemas(), etc.
+    r"(?i)\bduckdb_(?:tables|columns|schemas|databases|types|functions|settings|extensions|views|indexes|sequences|constraints|keywords|optimizers)\s*\(",
+    // FILE SYSTEM ACCESS
+    // Matches: read_csv(), read_parquet(), read_json(), read_text(), read_blob()
+    r"(?i)\bread_(?:csv|csv_auto|parquet|json|json_auto|text|blob)\s*\(",
+    // FILE EXPORT
+    // Matches: COPY ... TO 'file', EXPORT DATABASE
+    r"(?i)\bcopy\b[\s\S]{0,200}\bto\b\s*'[^']*'",
+    r"(?i)\bexport\s+database\b",
+    // EXTERNAL DATABASE ATTACH
+    // Matches: ATTACH 'file.db', ATTACH DATABASE
+    r"(?i)\battach\b\s*(?:database\b\s*)?'[^']*'",
+    // HTTPFS / REMOTE FILE ACCESS
+    // Matches: read_csv('https://...'), read_parquet('s3://...')
+    r"(?i)\bread_\w+\s*\(\s*'(?:https?|s3|gcs|az)://",
+    // GLOB FILE ENUMERATION
+    // Matches: glob('path/*')
+    r"(?i)\bglob\s*\(\s*'[^']*'",
+    // SECRETS (credential exfiltration)
+    // Matches: CREATE SECRET, WHICH_SECRET(), duckdb_secrets()
+    r"(?i)\bcreate\s+(?:or\s+replace\s+)?secret\b",
+    r"(?i)\bduckdb_secrets\s*\(",
+    // PRAGMA / EXTENSION LOADING
+    // Matches: LOAD 'extension', INSTALL 'extension'
+    r"(?i)\b(?:load|install)\s+'[^']*'",
+    // MACRO / FUNCTION INJECTION
+    // Matches: CREATE MACRO, CREATE FUNCTION
+    r"(?i)\bcreate\s+(?:or\s+replace\s+)?(?:macro|function)\b",
+    // SUMMARIZE / DESCRIBE (schema probing)
+    // Matches: SUMMARIZE table, DESCRIBE table
+    r"(?i)\b(?:summarize|describe)\s+\w+",
+    // RECURSIVE CTE
+    // Matches: WITH RECURSIVE — used in blind injection
+    r"(?i)\bwith\s+recursive\b",
+];
