@@ -4,7 +4,7 @@ A Rust library with Python bindings for detecting SQL injection patterns in inpu
 
 >[!NOTE]
 >
->Primary goal is to block AI agents from manipulating the data in the DB. or the DB. itself!
+>The primary goal is to block AI agents from manipulating the data in the DB. or the DB. itself!
 
 ## Supported Databases
 
@@ -35,9 +35,6 @@ make release
 
     validate_query("SELECT * FROM users WHERE id = 1 OR 1=1 --")
     # True
-
-    validate_query("'; DROP TABLE users; --")
-    # True
     ```
 
 - Rust
@@ -59,7 +56,7 @@ make release
 - Sanity Tests
 
     ```bash
-    make test
+    make unittest
     ```
 
 - Dataset evaluation (requires dataset)
@@ -80,7 +77,3 @@ Evaluated against the [RbSQLi dataset](https://data.mendeley.com/datasets/xz4d5z
     -------------------|---------------|---------------|
     Actual Malicious   |   2,813,146   |           0   |
     Actual Benign      |           0   |   7,490,880   |
-
-## License
-
-[MIT](LICENSE)
