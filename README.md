@@ -1,5 +1,7 @@
 # injectdb
 
+[![CodeQL](https://github.com/KanishkNavale/injectdb/actions/workflows/codeql.yml/badge.svg)](https://github.com/KanishkNavale/injectdb/actions/workflows/codeql.yml)   [![Dependabot Updates](https://github.com/KanishkNavale/injectdb/actions/workflows/dependabot/dependabot-updates/badge.svg)](https://github.com/KanishkNavale/injectdb/actions/workflows/dependabot/dependabot-updates) [![Dependency Review](https://github.com/KanishkNavale/injectdb/actions/workflows/dependecy-review.yml/badge.svg)](https://github.com/KanishkNavale/injectdb/actions/workflows/dependecy-review.yml)    [![Release](https://github.com/KanishkNavale/injectdb/actions/workflows/release.yml/badge.svg)](https://github.com/KanishkNavale/injectdb/actions/workflows/release.yml)    [![Test, Lint & Format](https://github.com/KanishkNavale/injectdb/actions/workflows/ci.yml/badge.svg)](https://github.com/KanishkNavale/injectdb/actions/workflows/ci.yml)
+
 A Rust library with Python bindings for detecting SQL injection patterns in input strings. Built for speed and designed especially for AI agents that process or generate SQL queries.
 
 >[!NOTE]
