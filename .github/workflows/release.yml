@@ -86,7 +86,7 @@ jobs:
           cargo update --workspace
 
           # Sync uv.lock
-          uv lock --check
+          uv lock
 
       - name: Verify Version Alignment
         run: |
