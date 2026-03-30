@@ -29,6 +29,9 @@ jobs:
       - name: Install Rust
         uses: dtolnay/rust-toolchain@stable
 
+      - name: Install uv
+        run: pip install uv
+
       - name: Determine Version Bump
         id: bump_logic
         shell: python
