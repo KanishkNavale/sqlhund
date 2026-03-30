@@ -82,6 +82,9 @@ jobs:
           # Sync Cargo.lock
           cargo update --workspace
 
+          # Sync uv.lock
+          uv lock --check
+
       - name: Verify Version Alignment
         run: |
           CARGO_VER=$(grep '^version =' Cargo.toml | head -1 | cut -d '"' -f 2)
@@ -97,7 +100,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           
-          git add Cargo.toml Cargo.lock pyproject.toml
+          git add Cargo.toml Cargo.lock pyproject.toml uv.lock
           git commit -m "chore: release $TAG"
           git tag -a "$TAG" -m "Release $TAG"
 

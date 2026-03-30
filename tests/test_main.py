@@ -1,7 +1,7 @@
 import pytest
 
 
-from injectdb import validate_query
+from injectdb import is_query_malicious
 
 should_block = [
     "DELETE FROM users",
@@ -22,9 +22,9 @@ should_pass = [
 
 @pytest.mark.parametrize("query", should_block)
 def test_should_block(query):
-    assert validate_query(query), f"Should be blocked: {query}"
+    assert is_query_malicious(query), f"Should be blocked: {query}"
 
 
 @pytest.mark.parametrize("query", should_pass)
 def test_should_pass(query):
-    assert not validate_query(query), f"Should pass: {query}"
+    assert not is_query_malicious(query), f"Should pass: {query}"
