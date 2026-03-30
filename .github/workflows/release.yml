@@ -1,0 +1,106 @@
+name: Release
+
+on:
+  pull_request:
+    types: [closed]
+    branches:
+      - main
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  bump-and-tag:
+    if: >-
+          github.event.pull_request.merged == true &&
+          (contains(github.event.pull_request.labels.*.name, 'Patch Release') ||
+          contains(github.event.pull_request.labels.*.name, 'Minor Release') ||
+          contains(github.event.pull_request.labels.*.name, 'Major Release'))
+
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.RELEASER }}
+          fetch-depth: 0
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Determine Version Bump
+        id: bump_logic
+        shell: python
+        run: |
+          import os
+          import re
+          import json
+
+          # 1. Get labels from environment
+          raw_labels = json.loads('''${{ toJson(github.event.pull_request.labels) }}''')
+          labels = [l['name'].lower() for l in raw_labels]
+          bump_type = "major" if "major release" in labels else "minor" if "minor release" in labels else "patch"
+
+          # 2. Read current version from Cargo.toml
+          with open("Cargo.toml", "r") as f:
+              content = f.read()
+          
+          match = re.search(r'^version\s*=\s*"([^"]+)"', content, re.MULTILINE)
+          if not match:
+              print("Could not find version in Cargo.toml")
+              exit(1)
+          
+          current_version = match.group(1)
+          major, minor, patch = map(int, current_version.split('.'))
+
+          # 3. Calculate new version
+          if bump_type == "major":
+              major += 1; minor = 0; patch = 0
+          
+          if bump_type == "minor":
+              minor += 1; patch = 0
+          
+          if bump_type == "patch":
+              patch += 1
+          
+          new_version = f"{major}.{minor}.{patch}"
+          
+          # 4. Write to GITHUB_OUTPUT
+          with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
+              f.write(f"new_version={new_version}\n")
+              f.write(f"tag=v{new_version}\n")
+
+      - name: Update Manifests
+        run: |
+          NEW_VER="${{ steps.bump_logic.outputs.new_version }}"
+          
+          # Use specialized sed to only replace the first occurrence of version in the [package] section
+          sed -i "0,/^version = .*/s//version = \"$NEW_VER\"/" Cargo.toml
+          sed -i "0,/^version = .*/s//version = \"$NEW_VER\"/" pyproject.toml
+          
+          # Sync Cargo.lock
+          cargo update --workspace
+
+      - name: Verify Version Alignment
+        run: |
+          CARGO_VER=$(grep '^version =' Cargo.toml | head -1 | cut -d '"' -f 2)
+          PY_VER=$(grep '^version =' pyproject.toml | head -1 | cut -d '"' -f 2)
+          if [ "$CARGO_VER" != "$PY_VER" ]; then
+            echo "Version mismatch: Cargo($CARGO_VER) vs Python($PY_VER)"
+            exit 1
+          fi
+
+      - name: Commit and Push
+        run: |
+          TAG="${{ steps.bump_logic.outputs.tag }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          
+          git add Cargo.toml Cargo.lock pyproject.toml
+          git commit -m "chore: release $TAG"
+          git tag -a "$TAG" -m "Release $TAG"
+          git push origin main --follow-tags
