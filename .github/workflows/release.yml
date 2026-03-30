@@ -15,11 +15,7 @@ permissions:
 
 jobs:
   bump-and-tag:
-    if: >-
-          github.event.pull_request.merged == true &&
-          (contains(github.event.pull_request.labels.*.name, 'Patch Release') ||
-          contains(github.event.pull_request.labels.*.name, 'Minor Release') ||
-          contains(github.event.pull_request.labels.*.name, 'Major Release'))
+    if: github.event.pull_request.merged == true
 
     runs-on: ubuntu-latest
     steps:
