@@ -3,13 +3,13 @@ use patterns::matched_patterns;
 
 use pyo3::prelude::*;
 
-pub fn validate_query(query: &str) -> bool {
+pub fn is_query_malicious(query: &str) -> bool {
     let matches = matched_patterns(query);
     !matches.is_empty()
 }
 
 #[pyfunction]
-#[pyo3(name = "validate_query")]
+#[pyo3(name = "is_query_malicious")]
 /// Checks whether the input string contains SQL injection patterns.
 ///
 /// Args:
@@ -20,16 +20,16 @@ pub fn validate_query(query: &str) -> bool {
 ///
 /// Example:
 ///     >>> import injectdb
-///     >>> injectdb.validate_query("' OR 1=1 --")
+///     >>> injectdb.is_query_malicious("' OR 1=1 --")
 ///     True
-///     >>> injectdb.validate_query("SELECT id FROM users WHERE id = 1")
+///     >>> injectdb.is_query_malicious("SELECT id FROM users WHERE id = 1")
 ///     False
-fn py_validate_query(query: &str) -> PyResult<bool> {
-    Ok(validate_query(query))
+fn py_is_query_malicious(query: &str) -> PyResult<bool> {
+    Ok(is_query_malicious(query))
 }
 
 #[pymodule]
 fn injectdb(m: &Bound<'_, PyModule>) -> PyResult<()> {
-    m.add_function(wrap_pyfunction!(py_validate_query, m)?)?;
+    m.add_function(wrap_pyfunction!(py_is_query_malicious, m)?)?;
     Ok(())
 }

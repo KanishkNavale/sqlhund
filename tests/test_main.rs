@@ -1,4 +1,4 @@
-use injectdb::validate_query;
+use injectdb::is_query_malicious;
 
 #[test]
 fn test_blocking_input() {
@@ -13,7 +13,7 @@ fn test_blocking_input() {
     ];
 
     for query in &should_block {
-        assert!(validate_query(query), "Should be blocked: {}", query);
+        assert!(is_query_malicious(query), "Should be blocked: {}", query);
     }
 }
 
@@ -26,6 +26,6 @@ fn test_non_blocking_input() {
     ];
 
     for query in &should_pass {
-        assert!(!validate_query(query), "Should pass: {}", query);
+        assert!(!is_query_malicious(query), "Should pass: {}", query);
     }
 }

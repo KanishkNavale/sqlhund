@@ -1,4 +1,4 @@
-use injectdb::validate_query;
+use injectdb::is_query_malicious;
 
 #[cfg(test)]
 mod dataset_tests {
@@ -53,7 +53,7 @@ mod dataset_tests {
 
     #[test]
     #[ignore = "Requires the dataset"]
-    fn test_validate_query_dataset() {
+    fn test_is_query_malicious_dataset() {
         let cases = load_data();
         let total = cases.len();
         let mut tp = 0usize;
@@ -74,7 +74,7 @@ mod dataset_tests {
         );
 
         for (query, expected) in &cases {
-            let result = validate_query(query);
+            let result = is_query_malicious(query);
             match (expected, result) {
                 (true, true) => tp += 1,
                 (false, false) => tn += 1,

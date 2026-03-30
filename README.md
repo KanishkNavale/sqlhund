@@ -28,25 +28,25 @@ make release
 - Python
 
     ```python
-    from injectdb import validate_query
+    from injectdb import is_query_malicious
 
-    validate_query("SELECT * FROM users WHERE id = 1")
+    is_query_malicious("SELECT * FROM users WHERE id = 1")
     # False
 
-    validate_query("SELECT * FROM users WHERE id = 1 OR 1=1 --")
+    is_query_malicious("SELECT * FROM users WHERE id = 1 OR 1=1 --")
     # True
     ```
 
 - Rust
 
     ```rust
-    use injectdb::validate_query;
+    use injectdb::is_query_malicious;
 
     fn main() {
-        let safe = validate_query("SELECT * FROM users WHERE id = 1");
+        let safe = is_query_malicious("SELECT * FROM users WHERE id = 1");
         println!("{}", safe); // false
 
-        let malicious = validate_query("SELECT * FROM users WHERE id = 1 OR 1=1 --");
+        let malicious = is_query_malicious("SELECT * FROM users WHERE id = 1 OR 1=1 --");
         println!("{}", malicious); // true
     }
     ```
