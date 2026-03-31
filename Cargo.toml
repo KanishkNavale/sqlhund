@@ -1,7 +1,7 @@
 [package]
 name = "sqlhund"
 description = "A Rust library with Python bindings for detecting SQL injection patterns in input strings. Built for speed and designed especially for AI agents that process or generate SQL queries."
-version = "0.0.4"
+version = "0.0.5"
 edition = "2024"
 authors = ["Kanishk Navale <navalekanishk@gmail.com>"]
 license = "MIT"
