@@ -14,7 +14,7 @@ permissions:
   contents: write
 
 jobs:
-  bump-and-tag:
+  bump-version:
     if: github.event.pull_request.merged == true
 
     runs-on: ubuntu-latest
@@ -107,5 +107,4 @@ jobs:
           git commit -m "chore: release $TAG"
           git tag -a "$TAG" -m "Release $TAG"
 
-          git remote set-url origin https://x-access-token:${{ secrets.GITKAT }}@github.com/${{ github.repository }}.git
           git push origin main --follow-tags
