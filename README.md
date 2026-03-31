@@ -25,34 +25,6 @@ pip install maturin
 make release
 ```
 
-## Usage
-
-- Python
-
-    ```python
-    from injectdb import is_query_malicious
-
-    is_query_malicious("SELECT * FROM users WHERE id = 1")
-    # False
-
-    is_query_malicious("SELECT * FROM users WHERE id = 1 OR 1=1 --")
-    # True
-    ```
-
-- Rust
-
-    ```rust
-    use injectdb::is_query_malicious;
-
-    fn main() {
-        let safe = is_query_malicious("SELECT * FROM users WHERE id = 1");
-        println!("{}", safe); // false
-
-        let malicious = is_query_malicious("SELECT * FROM users WHERE id = 1 OR 1=1 --");
-        println!("{}", malicious); // true
-    }
-    ```
-
 ## Testing
 
 - Sanity Tests
