@@ -5,7 +5,7 @@ description = "A Rust library with Python bindings for detecting SQL injection p
 authors = [{ name = "Kanishk Navale", email = "navalekanishk@gmail.com" }]
 license = "MIT"
 readme = "README.md"
-requires-python = ">=3.12,<4.0"
+requires-python = ">=3.10,<4.0"
 keywords = ["sql", "injection", "security", "detection", "pyo3", "ai-agents"]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -31,7 +31,14 @@ bindings = "pyo3"
 features = ["pyo3/extension-module"]
 
 [dependency-groups]
-dev = ["maturin>=1.12.6", "pytest>=9.0.2", "tqdm>=4.67.3"]
+dev = [
+    "black>=26.3.1",
+    "maturin>=1.12.6",
+    "pre-commit>=4.5.1",
+    "pytest>=9.0.2",
+    "ruff>=0.15.8",
+    "ty>=0.0.26",
+]
 
 [tool.pytest.ini_options]
 addopts = "--color=yes --durations=10"

@@ -1,5 +1,6 @@
 mod patterns;
-use patterns::{InjectionAnalysis, audit_patterns, matched_patterns};
+use patterns::abstracts::InjectionAnalysis;
+use patterns::main::{audit_patterns, matched_patterns};
 
 use pyo3::prelude::*;
 use pyo3::types::{PyDict, PyList};

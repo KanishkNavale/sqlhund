@@ -1,0 +1,67 @@
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: detect-private-key
+
+  - repo: local
+    hooks:
+      - id: cargo-fmt
+        name: cargo fmt
+        entry: cargo fmt --all
+        language: system
+        pass_filenames: false
+
+      - id: cargo-clippy
+        name: cargo clippy
+        entry: cargo clippy --all-targets --all-features -- -D warnings
+        language: system
+        pass_filenames: false
+
+      - id: cargo-check
+        name: cargo check
+        entry: cargo check --all
+        language: system
+        pass_filenames: false
+
+      - id: cargo-test
+        name: cargo test
+        entry: cargo test --all
+        language: system
+        pass_filenames: false
+        stages: [pre-push]
+
+      - id: ruff
+        name: ruff
+        entry: uv run ruff check . --fix
+        language: system
+        types: [python]
+        pass_filenames: false
+
+      - id: ty
+        name: ty
+        entry: uv run ty check .
+        language: system
+        types: [python]
+        pass_filenames: false
+
+      - id: black
+        name: black
+        entry: uv run black .
+        language: system
+        types: [python]
+        pass_filenames: false
+
+      - id: pytest
+        name: pytest
+        entry: uv run pytest
+        language: system
+        pass_filenames: false
+        always_run: true
+        args: [--quiet]

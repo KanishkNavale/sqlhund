@@ -48,27 +48,27 @@ jobs:
           # 2. Read current version from Cargo.toml
           with open("Cargo.toml", "r") as f:
               content = f.read()
-          
+
           match = re.search(r'^version\s*=\s*"([^"]+)"', content, re.MULTILINE)
           if not match:
               print("Could not find version in Cargo.toml")
               exit(1)
-          
+
           current_version = match.group(1)
           major, minor, patch = map(int, current_version.split('.'))
 
           # 3. Calculate new version
           if bump_type == "major":
               major += 1; minor = 0; patch = 0
-          
+
           if bump_type == "minor":
               minor += 1; patch = 0
-          
+
           if bump_type == "patch":
               patch += 1
-          
+
           new_version = f"{major}.{minor}.{patch}"
-          
+
           # 4. Write to GITHUB_OUTPUT
           with open(os.environ['GITHUB_OUTPUT'], 'a') as f:
               f.write(f"new_version={new_version}\n")
@@ -77,11 +77,11 @@ jobs:
       - name: Update Manifests
         run: |
           NEW_VER="${{ steps.bump_logic.outputs.new_version }}"
-          
+
           # Use specialized sed to only replace the first occurrence of version in the [package] section
           sed -i "0,/^version = .*/s//version = \"$NEW_VER\"/" Cargo.toml
           sed -i "0,/^version = .*/s//version = \"$NEW_VER\"/" pyproject.toml
-          
+
           # Sync Cargo.lock
           cargo update --workspace
 
@@ -102,7 +102,7 @@ jobs:
           TAG="${{ steps.bump_logic.outputs.tag }}"
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          
+
           git add Cargo.toml Cargo.lock pyproject.toml uv.lock
           git commit -m "Tag: $TAG"
           git tag -a "$TAG" -m "Release $TAG"

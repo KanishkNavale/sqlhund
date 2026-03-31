@@ -9,7 +9,7 @@ readme = "README.md"
 repository = "https://github.com/kanishknavale/sqlhund"
 homepage = "https://github.com/kanishknavale/sqlhund"
 keywords = ["sql", "injection", "security", "detection", "pyo3", "ai-agents"]
-categories = ["cybersecurity", "text-processing"]
+categories = ["sql", "cybersecurity", "text-processing", "ai-agents"]
 
 [lib]
 name = "sqlhund"

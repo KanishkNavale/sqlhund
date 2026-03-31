@@ -1,3 +1,12 @@
+dev:
+	@echo "Setting up development environment..."
+	uv sync --all-groups dev
+	uv run pre-commit install
+
+pre-commit:
+	@echo "Installing pre-commit hooks..."
+	uv run pre-commit run --all-files
+
 build:
 	@echo "Compiling sqlhund (dev)..."
 	uv run maturin develop

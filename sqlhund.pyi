@@ -34,7 +34,7 @@ def analyze_query(query: str) -> dict:
         >>> sqlhund.analyze_query("SELECT * FROM users; DROP TABLE users")
         {
             'is_malicious': True,
-            'affected_databases': ['users']
+            'affected_databases': ['sqlite', 'duckdb', 'postgresql']
         }
         >>> sqlhund.analyze_query("SELECT id FROM users WHERE id = 1")
         {
