@@ -311,7 +311,7 @@ dependencies = [
 
 [[package]]
 name = "sqlhund"
-version = "0.0.5"
+version = "0.0.6"
 dependencies = [
  "csv",
  "indicatif",
