@@ -1,6 +1,6 @@
 dev:
 	@echo "Setting up development environment..."
-	uv sync --all-groups dev
+	uv sync --all-groups
 	uv run pre-commit install
 
 pre-commit:
