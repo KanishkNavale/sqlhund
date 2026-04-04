@@ -36,7 +36,7 @@ fn test_analyze_query() {
         let analysis = analyze_query(query);
         assert!(analysis.is_malicious, "Should be malicious: {}", query);
         assert!(
-            !analysis.affected_databases.is_empty(),
+            !analysis.matches.is_empty(),
             "Should affect databases: {}",
             query
         );
@@ -49,7 +49,7 @@ fn test_analyze_query_non_malicious() {
         let analysis = analyze_query(query);
         assert!(!analysis.is_malicious, "Should not be malicious: {}", query);
         assert!(
-            analysis.affected_databases.is_empty(),
+            analysis.matches.is_empty(),
             "Should not affect databases: {}",
             query
         );
