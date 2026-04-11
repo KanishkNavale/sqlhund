@@ -22,7 +22,7 @@ dependencies = []
 Repository = "https://github.com/kanishknavale/sqlhund"
 
 [build-system]
-requires = ["maturin>=1.7"]
+requires = ["maturin>=1.13.1"]
 build-backend = "maturin"
 
 [tool.maturin]
@@ -33,11 +33,11 @@ features = ["pyo3/extension-module"]
 [dependency-groups]
 dev = [
     "black>=26.3.1",
-    "maturin>=1.12.6",
+    "maturin>=1.13.1",
     "pre-commit>=4.5.1",
-    "pytest>=9.0.2",
-    "ruff>=0.15.8",
-    "ty>=0.0.26",
+    "pytest>=9.0.3",
+    "ruff>=0.15.10",
+    "ty>=0.0.29",
 ]
 
 [tool.pytest.ini_options]
